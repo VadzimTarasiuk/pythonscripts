@@ -1,4 +1,4 @@
-somestring = 'abc12321cba'
+#otherstring = 'abc12321cba'
 otherstring = 'this is not a polyndrome'
 stringLength = len(otherstring)
 center = stringLength//2
