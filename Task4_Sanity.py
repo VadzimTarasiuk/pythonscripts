@@ -10,7 +10,7 @@ def readConfig(somepath):
     readparser = configparser.RawConfigParser()
     readparser.read(somepath)
     output = readparser.get("Common", "output")
-    interval = readparser.getint("Common", "interval")
+    interval = readparser.getfloat("Common", "interval")
     result = [output, interval]
     readparser.clear()
     return result
@@ -32,13 +32,15 @@ def defaults():
     return result
 
 def sanityCheck(interval, linenumber):
-    CPU = str(psutil.cpu_percent(interval=interval, percpu=True))
-    MEM =  str(psutil.swap_memory().used)
-    VMEM = str(psutil.virtual_memory().used)
-    IOinf = str(psutil.disk_io_counters())
-    NET = str(psutil.net_if_stats())
-    line = "SNAPSHOT%d\t" % linenumber + str(datetime.now().date()) + "\t" + str(datetime.now().strftime('%H:%M:%S')) + " : " + CPU + "\t" + MEM + "\t" + VMEM + "\t" + IOinf + "\t" + NET
-    return line + "\n"
+    SNAP = "SNAPSHOT%d\t" % linenumber
+    DT = str(datetime.now().date()) + " " + str(datetime.now().strftime('%H:%M:%S')) + " : "
+    CPU = str(psutil.cpu_percent(interval=interval, percpu=True)) + "\t"
+    MEM =  str(psutil.swap_memory().used) + "\t"
+    VMEM = str(psutil.virtual_memory().used) + "\t"
+    IOinf = str(psutil.disk_io_counters()) + "\t"
+    NET = str(psutil.net_if_stats()) + "\n"
+    line = SNAP + DT + CPU + MEM + VMEM + IOinf + NET
+    return line
 
 def executesanityCheck():
     if pathtoconfig.is_file():
