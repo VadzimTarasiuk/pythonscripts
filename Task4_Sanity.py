@@ -31,13 +31,13 @@ def defaults():
     result = [output, interval]
     return result
 
-def sanityCheck(interval):
+def sanityCheck(interval, linenumber):
     CPU = str(psutil.cpu_percent(interval=interval, percpu=True))
     MEM =  str(psutil.swap_memory().used)
     VMEM = str(psutil.virtual_memory().used)
     IOinf = str(psutil.disk_io_counters())
     NET = str(psutil.net_if_stats())
-    line = str(datetime.now().date()) + "\t" + str(datetime.now().strftime('%H:%M:%S')) + " : " + CPU + "\t" + MEM + "\t" + VMEM + "\t" + IOinf + "\t" + NET
+    line = "SNAPSHOT%d\t" % linenumber + str(datetime.now().date()) + "\t" + str(datetime.now().strftime('%H:%M:%S')) + " : " + CPU + "\t" + MEM + "\t" + VMEM + "\t" + IOinf + "\t" + NET
     return line + "\n"
 
 def executesanityCheck():
@@ -49,11 +49,12 @@ def executesanityCheck():
         outputpath = Path("sanity.%s" % configuration[0])
 
     if outputpath.is_file():
-        m = "a"
+        outputfile = open(outputpath, mode="r+")
+        counter = len(outputfile.readlines()) + 1
     else:
-        m = "w"
-    outputfile = open(outputpath, mode=m)
-    outputfile.write(sanityCheck(configuration[1]))
+        outputfile = open(outputpath, mode="w")
+        counter = 1
+    outputfile.write(sanityCheck(configuration[1], counter))
     outputfile.flush()
     outputfile.close()
 
