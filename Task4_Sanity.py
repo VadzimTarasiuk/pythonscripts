@@ -19,7 +19,7 @@ def writeConfigSample(somepath):
     writeparser = configparser.RawConfigParser()
     writeparser.add_section('Common')
     writeparser.set('Common', 'output', 'json')
-    writeparser.set('Common', 'interval', '5')
+    writeparser.set('Common', 'interval', '1')
     with open(somepath, 'w') as configfile:
         writeparser.write(configfile)
     writeparser.clear()
@@ -27,7 +27,7 @@ def writeConfigSample(somepath):
 
 def defaults():
     output = "log"
-    interval = 2
+    interval = 0.5
     result = [output, interval]
     return result
 
