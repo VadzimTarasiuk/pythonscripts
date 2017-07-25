@@ -54,7 +54,7 @@ def executesanityCheck():
 
     if configuration[0] == "json":
         if Path("sanity.json").is_file():
-            with open("sanity.json", mode='r') as rjson:
+            with open("sanity.json", mode='r+') as rjson:
                 data = json.load(rjson)
                 counter = len(rjson.readlines()) + 1
                 data.update(sanityCheck(counter)[0])
